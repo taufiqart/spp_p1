@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('nama');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('level',['admin','petugas','siswa'])->default('siswa');
-            $table->rememberToken();
+            // $table->rememberToken();
             $table->timestamps();
         });
     }

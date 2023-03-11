@@ -16,7 +16,11 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        return dd(Siswa::all());
+        $kelas = Kelas::all();
+        $jurusan = Jurusan::all();
+        $siswa = Siswa::paginate(8);
+        // return dd($siswa);
+        return Inertia::render('Siswa/Index',['siswa'=>$siswa,'kelas'=>$kelas,'jurusan'=>$jurusan]);
     }
 
     /**
@@ -69,7 +73,10 @@ class SiswaController extends Controller
      */
     public function show(Siswa $siswa)
     {
-        //
+        $kelas = Kelas::all();
+        $jurusan = Jurusan::all();
+        return Inertia::render('Siswa/View',['siswa'=>$siswa,'kelas'=>$kelas,'jurusan'=>$jurusan]);
+        return dd($siswa);
     }
 
     /**
@@ -85,7 +92,35 @@ class SiswaController extends Controller
      */
     public function update(Request $request, Siswa $siswa)
     {
-        //
+        $validate = Validator::make($request->all(),[
+            "nisn"=> "required",
+            "nis"=> "required",
+            "nama"=> "required",
+            "kelas_id"=> "required",
+            "jurusan_id"=> "required",
+            "alamat"=> "required",
+            "no_tlp"=> "required",
+            "user_id"=> "nullable",
+        ]);
+
+        if($validate->fails()){
+            return back()->withErrors($validate->errors());
+        }
+        $validate = $validate->validate();
+        $siswa->update([
+            "nisn"=>$validate['nisn'],
+            "nis"=>$validate['nis'],
+            "nama"=>$validate['nama'],
+            "alamat"=>$validate['alamat'],
+            "kelas_id"=>$validate['kelas_id'],
+            "jurusan_id"=>$validate['jurusan_id'],
+            "alamat"=>$validate['alamat'],
+            "no_tlp"=>$validate['no_tlp'],
+            "user_id"=>$validate['user_id'],
+        ]);
+
+        return back()->with('success','data berhasil di perbarui');
+        return dd($request);
     }
 
     /**
@@ -93,6 +128,8 @@ class SiswaController extends Controller
      */
     public function destroy(Siswa $siswa)
     {
-        //
+        
+        $siswa->destroy($siswa->id);
+        return back()->with('success',"data berhasil di hapus");
     }
 }
