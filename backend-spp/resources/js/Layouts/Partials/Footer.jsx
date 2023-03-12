@@ -7,19 +7,15 @@ export default function Footer() {
                 <div className="flex flex-wrap items-center -mx-3 lg:justify-between">
                     <div className="w-full max-w-full px-3 mt-0 mb-6 shrink-0 lg:mb-0 lg:w-1/2 lg:flex-none">
                         <div className="leading-normal text-center text-sm text-slate-500 lg:text-left">
-                            ©
-                            <script>
-                                document.write(new Date().getFullYear() + ",");
-                            </script>
+                            ©{new Date().getFullYear() + ", "}
                             made with <i className="fa fa-heart"></i> by
                             <a
-                                href="https://www.creative-tim.com"
-                                className="font-semibold text-slate-700"
+                                href="https://instagram.com/taufiqart13579"
+                                className="font-semibold text-slate-700 ml-1"
                                 target="_blank"
                             >
-                                Creative Tim
+                                Taufiq Art
                             </a>
-                            for a better web.
                         </div>
                     </div>
                     <div className="w-full max-w-full px-3 mt-0 shrink-0 lg:w-1/2 lg:flex-none">

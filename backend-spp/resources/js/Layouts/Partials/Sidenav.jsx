@@ -1,4 +1,5 @@
-import { Link } from "@inertiajs/react";
+import Icons from "@/Components/Icons";
+import { Link, usePage } from "@inertiajs/react";
 import React, { useEffect } from "react";
 function TitleSidenav({ children }) {
     return (
@@ -33,7 +34,7 @@ function ItemSidenav({ active = false, url = "", icon = "", title = "" }) {
         ? "py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors "
         : "py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors";
     let divClassName = active
-        ? "bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
+        ? "fill-white stroke-white bg-gradient-to-tl from-purple-700 to-pink-500 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5"
         : "shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5";
     return (
         <li className="mt-0.5 w-full">
@@ -48,6 +49,7 @@ function ItemSidenav({ active = false, url = "", icon = "", title = "" }) {
 }
 
 export default function Sidenav() {
+    let { auth } = usePage().props;
     return (
         <>
             {/* <!-- sidenav  --> */}
@@ -68,7 +70,7 @@ export default function Sidenav() {
                             alt="main_logo"
                         />
                         <span className="ml-1 font-semibold transition-all duration-200 ease-nav-brand">
-                            Soft UI Dashboard
+                            SPP
                         </span>
                     </a>
                 </div>
@@ -78,7 +80,7 @@ export default function Sidenav() {
                 <div className="items-center block w-auto max-h-screen overflow-auto h-sidenav grow basis-full">
                     <ul className="flex flex-col pl-0 mb-0">
                         <ItemSidenav
-                            url="/"
+                            url={route("dashboard")}
                             title={"Dashboard"}
                             icon={
                                 <svg
@@ -87,6 +89,7 @@ export default function Sidenav() {
                                     viewBox="0 0 42 42"
                                     version="1.1"
                                     xmlns="http://www.w3.org/2000/svg"
+                                    style={{ transform: "scale(1.5)" }}
                                     xmlnsXlink="http://www.w3.org/1999/xlink"
                                 >
                                     <title>office</title>
@@ -120,22 +123,40 @@ export default function Sidenav() {
                         />
 
                         <TitleSidenav>Pages</TitleSidenav>
-
                         <ItemSidenav
-                            url={route("siswa.index")}
-                            icon=""
-                            title="Siswa"
+                            url={route("pembayaran.index")}
+                            icon={<Icons.pembayaran />}
+                            title="Pembayaran"
                         ></ItemSidenav>
-                        <ItemSidenav
-                            url={route("users.index")}
-                            icon=""
-                            title="Users"
-                        ></ItemSidenav>
-                        <ItemSidenav
-                            url={route("users.index")}
-                            icon=""
-                            title="Users"
-                        ></ItemSidenav>
+                        {auth.user.level != "siswa" && (
+                            <>
+                                <ItemSidenav
+                                    url={route("spp.index")}
+                                    icon={<Icons.spp />}
+                                    title="Spp"
+                                ></ItemSidenav>
+                                <ItemSidenav
+                                    url={route("siswa.index")}
+                                    icon={<Icons.siswa />}
+                                    title="Siswa"
+                                ></ItemSidenav>
+                                <ItemSidenav
+                                    url={route("users.index")}
+                                    icon={<Icons.users />}
+                                    title="Users"
+                                ></ItemSidenav>
+                                <ItemSidenav
+                                    url={route("kelas.index")}
+                                    icon={<Icons.kelas />}
+                                    title="Kelas"
+                                ></ItemSidenav>
+                                <ItemSidenav
+                                    url={route("jurusan.index")}
+                                    icon={<Icons.jurusan />}
+                                    title="Jurusan"
+                                ></ItemSidenav>
+                            </>
+                        )}
                     </ul>
                 </div>
             </aside>

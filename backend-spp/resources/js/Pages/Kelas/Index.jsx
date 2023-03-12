@@ -7,14 +7,16 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import Alert from "@/Components/Alert";
+import Badge from "@/Components/Badge";
+import Card from "@/Layouts/Partials/Card";
 import Pagination from "@/Components/Pagination";
-import ModalSiswa from "./Partials/ModalSiswa";
-export default function Index({ siswa, kelas, jurusan }) {
+import ModalKelas from "./Partials/ModalKelas";
+
+export default function Index({ kelas, jurusan }) {
     const [show, setShow] = useState(false);
     const [showD, setShowD] = useState(false);
     const [showU, setShowU] = useState(false);
     const [links, setLinks] = useState("");
-    // const [si, setLinks] = useState('');
 
     const {
         data,
@@ -27,22 +29,17 @@ export default function Index({ siswa, kelas, jurusan }) {
         reset,
     } = useForm({
         id: "",
-        nisn: "",
-        nis: "",
-        nama: "",
-        kelas_id: "1",
-        jurusan_id: "1",
-        alamat: "",
-        no_tlp: "",
-        user_id: "",
+        kelas: "",
     });
 
-    let { flash } = usePage().props;
+    let { flash, auth } = usePage().props;
+
+    let d = usePage().props;
+
     useEffect(() => {
-        console.log(siswa);
-        setLinks(siswa.links);
-        console.log(links);
-    }, []);
+        setLinks(kelas.links);
+        console.log(data);
+    }, [kelas, errors, processing]);
 
     const onClose = () => {
         reset();
@@ -66,8 +63,8 @@ export default function Index({ siswa, kelas, jurusan }) {
         if (flash.success) {
             setTimeout(() => {
                 setShow(false);
-                setShowU(false);
                 setShowD(false);
+                setShowU(false);
             }, 1000);
         }
         console.log(flash);
@@ -81,23 +78,25 @@ export default function Index({ siswa, kelas, jurusan }) {
                 : event.target.value
         );
     };
-    const submit = (e) => {
-        e.preventDefault();
 
-        post(route("siswa.store", data.id));
-    };
     const submitU = (e) => {
         e.preventDefault();
-
-        put(route("siswa.update", data.id));
+        put(route("kelas.update", data.id));
     };
+
+    const submit = (e) => {
+        e.preventDefault();
+        post(route("kelas.store"));
+    };
+
     const deleteSubmit = (e) => {
         e.preventDefault();
-        destroy(route("siswa.update", data.id));
+        destroy(route("kelas.update", data.id));
     };
+
     let paramUpdate = {
         textBtn: "Update Data",
-        title: "Update Data User",
+        title: "Update Data Kelas",
         show: showU,
         setShow: setShowU,
         onClose: onClose,
@@ -106,14 +105,12 @@ export default function Index({ siswa, kelas, jurusan }) {
         handleOnChange: handleOnChange,
         errors: errors,
         processing: processing,
+        // levels: levels,
         submit: submitU,
-        kelas: kelas,
-        jurusan: jurusan,
     };
-
     let paramInsert = {
         textBtn: "Tambah Data",
-        title: "Tambah Data User",
+        title: "Tambah Data Kelas",
         show: show,
         setShow: setShow,
         onClose: onClose,
@@ -122,11 +119,9 @@ export default function Index({ siswa, kelas, jurusan }) {
         handleOnChange: handleOnChange,
         errors: errors,
         processing: processing,
+        // levels: levels,
         submit: submit,
-        kelas: kelas,
-        jurusan: jurusan,
     };
-
     let paramDelete = {
         show: showD,
         setShow: setShowD,
@@ -136,11 +131,11 @@ export default function Index({ siswa, kelas, jurusan }) {
         handleOnChange: handleOnChange,
         errors: errors,
         processing: processing,
+        // levels: levels,
         submit: deleteSubmit,
     };
-
     return (
-        <DashboardLayout pages={"Siswa"}>
+        <DashboardLayout pages={"Kelas"}>
             <div
                 onClick={() => setShow(true)}
                 className={
@@ -150,86 +145,43 @@ export default function Index({ siswa, kelas, jurusan }) {
                 <button>+ New</button>
             </div>
             <Table
-                titleHeader={"Data Siswa"}
+                titleHeader={"Data Kelas"}
                 thead={
                     <>
-                        <Table.Th>NISN</Table.Th>
-                        <Table.Th>NIS</Table.Th>
-                        <Table.Th>NAMA</Table.Th>
+                        <Table.Th>ID</Table.Th>
                         <Table.Th>KELAS</Table.Th>
-                        <Table.Th>JURUSAN</Table.Th>
-                        <Table.Th>ALAMAT</Table.Th>
-                        <Table.Th>NO TELP</Table.Th>
                         <Table.Th></Table.Th>
                     </>
                 }
             >
-                {siswa.data &&
-                    siswa.data.map((sis, idx) => {
+                {kelas.data &&
+                    kelas.data.map((kel, idx) => {
                         return (
                             <tr key={idx}>
                                 <Table.Td
                                     index={idx}
-                                    length={siswa.data.length}
+                                    length={kelas.data.length}
                                 >
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.nisn}
+                                        {kel.id}
                                     </span>
                                 </Table.Td>
                                 <Table.Td
                                     index={idx}
-                                    length={siswa.data.length}
+                                    length={kelas.data.length}
                                 >
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.nis}
+                                        {kel.kelas}
                                     </span>
                                 </Table.Td>
                                 <Table.Td
                                     index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.nama}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.kelas.kelas}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.jurusan.jurusan}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.alamat}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.no_tlp}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
+                                    length={kelas.data.length}
                                 >
                                     <div className="flex item-center justify-center">
-                                        <Link href={`siswa/${sis.id}`}>
+                                        <Link
+                                            href={route("kelas.show", kel.id)}
+                                        >
                                             <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -256,15 +208,8 @@ export default function Index({ siswa, kelas, jurusan }) {
                                             className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110"
                                             onClick={() => {
                                                 setData({
-                                                    id: sis.id,
-                                                    nisn: sis.nisn,
-                                                    nis: sis.nis,
-                                                    nama: sis.nama,
-                                                    kelas_id: sis.kelas_id,
-                                                    jurusan_id: sis.jurusan_id,
-                                                    alamat: sis.alamat,
-                                                    no_tlp: sis.no_tlp,
-                                                    user_id: sis.user_id,
+                                                    id: kel.id,
+                                                    kelas: kel.kelas,
                                                 });
                                                 setShowU(true);
                                             }}
@@ -291,7 +236,7 @@ export default function Index({ siswa, kelas, jurusan }) {
                                                 stroke="currentColor"
                                                 onClick={() => {
                                                     setData({
-                                                        id: sis.id,
+                                                        id: kel.id,
                                                     });
                                                     setShowD(true);
                                                 }}
@@ -313,9 +258,9 @@ export default function Index({ siswa, kelas, jurusan }) {
 
             <Pagination links={links}></Pagination>
 
-            <ModalSiswa params={paramDelete} type="delete"></ModalSiswa>
-            <ModalSiswa params={paramInsert}></ModalSiswa>
-            <ModalSiswa params={paramUpdate}></ModalSiswa>
+            <ModalKelas params={paramDelete} type="delete"></ModalKelas>
+            <ModalKelas params={paramInsert}></ModalKelas>
+            <ModalKelas params={paramUpdate}></ModalKelas>
         </DashboardLayout>
     );
 }

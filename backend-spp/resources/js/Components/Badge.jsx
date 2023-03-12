@@ -8,7 +8,7 @@ export default function Badge({ children, color = 0 }) {
         "bg-red-200 text-red-600 ",
     ];
     return (
-        <span class={style[color] + "py-1 px-3 rounded-full text-xs"}>
+        <span className={style[color] + "py-1 px-3 rounded-full text-xs"}>
             {children}
         </span>
     );

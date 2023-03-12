@@ -1,0 +1,11 @@
+let font = document
+    .querySelector("pre")
+    .textContent.replaceAll("(", "||")
+    .replaceAll(")", "||")
+    .replaceAll("/* ", "*")
+    .replaceAll(" */", "||")
+    .replaceAll(";", "||")
+    .replaceAll(": ", "-")
+    .replaceAll("\n  ", "||")
+    .replaceAll("\n", "||")
+    .split("||");

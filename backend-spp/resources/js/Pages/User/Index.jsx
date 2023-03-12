@@ -9,11 +9,13 @@ import TextInput from "@/Components/TextInput";
 import Alert from "@/Components/Alert";
 import Badge from "@/Components/Badge";
 import Card from "@/Layouts/Partials/Card";
+import Pagination from "@/Components/Pagination";
+import ModalUser from "./Partials/ModalUser";
 
 export default function Index({ user, kelas, jurusan }) {
     const [show, setShow] = useState(false);
     const [showD, setShowD] = useState(false);
-    const [showI, setShowI] = useState(false);
+    const [showU, setShowU] = useState(false);
     const [links, setLinks] = useState("");
     const [levels, setLevels] = useState([]);
 
@@ -31,7 +33,7 @@ export default function Index({ user, kelas, jurusan }) {
         nama: "",
         username: "",
         email: "",
-        level: "",
+        level: "siswa",
         password: "",
     });
 
@@ -53,29 +55,31 @@ export default function Index({ user, kelas, jurusan }) {
     }, [user, errors, processing]);
 
     const onClose = () => {
-        setData({
-            id: "",
-            nama: "",
-            username: "",
-            email: "",
-            level: "",
-            password: "",
-        });
+        // setData({
+        //     id: "",
+        //     nama: "",
+        //     username: "",
+        //     email: "",
+        //     level: "siswa",
+        //     password: "",
+        // });
+        reset();
     };
+    useEffect(() => {
+        reset();
+        // setData({
+        //     id: "",
+        //     nama: "",
+        //     username: "",
+        //     email: "",
+        //     level: "siswa",
+        //     password: "",
+        // });
+    }, [show]);
 
     const onCloseD = () => {
         setData({
             id: "",
-        });
-    };
-    const onCloseI = () => {
-        setData({
-            id: "",
-            nama: "",
-            username: "",
-            email: "",
-            level: "",
-            password: "",
         });
     };
 
@@ -98,6 +102,11 @@ export default function Index({ user, kelas, jurusan }) {
         }
         if (flash.success) {
             setTimeout(() => {
+                setShowU(false);
+            }, 1000);
+        }
+        if (flash.success) {
+            setTimeout(() => {
                 setShowD(false);
             }, 1000);
         }
@@ -113,12 +122,12 @@ export default function Index({ user, kelas, jurusan }) {
         );
     };
 
-    const submit = (e) => {
+    const submitU = (e) => {
         e.preventDefault();
         put(route("users.update", data.id));
     };
 
-    const submitI = (e) => {
+    const submit = (e) => {
         e.preventDefault();
         post(route("users.store"));
     };
@@ -128,10 +137,51 @@ export default function Index({ user, kelas, jurusan }) {
         destroy(route("users.update", data.id));
     };
 
+    let paramUpdate = {
+        textBtn: "Update Data",
+        title: "Update Data User",
+        show: showU,
+        setShow: setShowU,
+        onClose: onClose,
+        flash: flash,
+        data: data,
+        handleOnChange: handleOnChange,
+        errors: errors,
+        processing: processing,
+        levels: levels,
+        submit: submitU,
+    };
+    let paramInsert = {
+        textBtn: "Tambah Data",
+        title: "Tambah Data User",
+        show: show,
+        setShow: setShow,
+        onClose: onClose,
+        flash: flash,
+        data: data,
+        handleOnChange: handleOnChange,
+        errors: errors,
+        processing: processing,
+        levels: levels,
+        submit: submit,
+    };
+
+    let paramDelete = {
+        show: showD,
+        setShow: setShowD,
+        onClose: onClose,
+        flash: flash,
+        data: data,
+        handleOnChange: handleOnChange,
+        errors: errors,
+        processing: processing,
+        levels: levels,
+        submit: deleteSubmit,
+    };
     return (
-        <DashboardLayout>
+        <DashboardLayout pages={"Users"}>
             <div
-                onClick={() => setShowI(true)}
+                onClick={() => setShow(true)}
                 className={
                     "bg-blue-500 w-28 text-center text-white rounded-md mb-4 py-2"
                 }
@@ -217,7 +267,7 @@ export default function Index({ user, kelas, jurusan }) {
                                                     email: use.email,
                                                     level: use.level,
                                                 });
-                                                setShow(true);
+                                                setShowU(true);
                                             }}
                                         >
                                             <svg
@@ -268,392 +318,11 @@ export default function Index({ user, kelas, jurusan }) {
                     })}
             </Table>
 
-            {/* pagination */}
+            <Pagination links={links}></Pagination>
 
-            <nav aria-label="Page navigation example">
-                <ul className="inline-flex items-center -space-x-px">
-                    {links &&
-                        links.map((link, index) => {
-                            return (
-                                <li key={index + link.label}>
-                                    <a
-                                        href={link.url ?? "#"}
-                                        className={
-                                            (index == 0
-                                                ? "rounded-l-lg "
-                                                : index == links.length - 1
-                                                ? "rounded-r-lg "
-                                                : "") +
-                                            "px-3 py-2 leading-tight " +
-                                            (link.active
-                                                ? "text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-                                                : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white")
-                                        }
-                                    >
-                                        {index == 0 ? (
-                                            <>
-                                                <span className="sr-only">
-                                                    Previous
-                                                </span>
-                                                <svg
-                                                    aria-hidden="true"
-                                                    className="w-5 h-5"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                                        clipRule="evenodd"
-                                                    ></path>
-                                                </svg>
-                                            </>
-                                        ) : index == links.length - 1 ? (
-                                            <>
-                                                <span className="sr-only">
-                                                    Next
-                                                </span>
-                                                <svg
-                                                    aria-hidden="true"
-                                                    className="w-5 h-5"
-                                                    fill="currentColor"
-                                                    viewBox="0 0 20 20"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                        clipRule="evenodd"
-                                                    ></path>
-                                                </svg>
-                                            </>
-                                        ) : (
-                                            link.label
-                                        )}
-                                    </a>
-                                </li>
-                            );
-                        })}
-                </ul>
-            </nav>
-
-            {/* end pagination */}
-
-            <Modal show={showD} setShow={setShowD} onClose={() => onCloseD()}>
-                <div className="w-full my-6 px-6 py-4 mx-auto bg-white overflow-hidden sm:rounded-lg">
-                    {flash.error && <Alert type="error">{flash.error}</Alert>}
-                    {flash.success && (
-                        <Alert type="success">{flash.success}</Alert>
-                    )}
-
-                    <h4>Yakin ingin menghapus data ?</h4>
-                    <div className="flex items-center justify-end mt-8">
-                        <button
-                            type="button"
-                            onClick={(e) => deleteSubmit(e)}
-                            disabled={processing}
-                            className="disabled:opacity-40 text-center justify-center inline-flex items-center px-4 py-2 bg-red-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:opacity-80 focus:opacity-80 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                        >
-                            {processing ? "Loading...." : "Delete data"}
-                        </button>
-                        <button
-                            className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
-                            onClick={() => setShowD(false)}
-                            type="button"
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-            </Modal>
-
-            <Modal show={showI} onClose={() => onCloseI()} setShow={setShowI}>
-                <div className="w-full my-6 px-6 py-4 mx-auto bg-white overflow-hidden sm:rounded-lg">
-                    <form
-                        onSubmit={submitI}
-                        className="flex flex-col gap-2"
-                        method="post"
-                    >
-                        {flash.error && (
-                            <Alert type="error">{flash.error}</Alert>
-                        )}
-                        {flash.success && (
-                            <Alert type="success">{flash.success}</Alert>
-                        )}
-
-                        <div className="text-center text-xl">
-                            Form Tambah Data User
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="nama" value="NAMA" />
-
-                            <TextInput
-                                id="nama"
-                                type="text"
-                                name="nama"
-                                value={data.nama}
-                                className="mt-1 block w-full"
-                                autoComplete="nama"
-                                isFocused={true}
-                                onChange={handleOnChange}
-                            />
-
-                            <InputError
-                                message={errors.nama}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="username" value="USERNAME" />
-
-                            <TextInput
-                                id="username"
-                                type="text"
-                                name="username"
-                                value={data.username}
-                                className="mt-1 block w-full"
-                                autoComplete="username"
-                                isFocused={true}
-                                onChange={handleOnChange}
-                            />
-
-                            <InputError
-                                message={errors.username}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="email" value="EMAIL" />
-
-                            <TextInput
-                                id="email"
-                                type="text"
-                                name="email"
-                                value={data.email}
-                                className="mt-1 block w-full"
-                                autoComplete="email"
-                                isFocused={true}
-                                onChange={handleOnChange}
-                            />
-
-                            <InputError
-                                message={errors.email}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="password" value="PASSWORD" />
-
-                            <TextInput
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password}
-                                className="mt-1 block w-full"
-                                autoComplete="password"
-                                isFocused={true}
-                                onChange={handleOnChange}
-                            />
-
-                            <InputError
-                                message={errors.password}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="level" value="LEVEL" />
-
-                            <select
-                                name="level"
-                                id="level"
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                onChange={handleOnChange}
-                                defaultValue={data.level}
-                            >
-                                {levels &&
-                                    levels.map((level, index) => {
-                                        return (
-                                            <option
-                                                key={index + level}
-                                                value={`${level}`}
-                                                selected={data.level == level}
-                                            >
-                                                {`${level}`}
-                                            </option>
-                                        );
-                                    })}
-                            </select>
-
-                            <InputError
-                                message={errors.level}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="flex items-center">
-                            <button
-                                disabled={processing}
-                                className="disabled:bg-gray-400 w-full text-center justify-center inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                            >
-                                {processing ? "Loading...." : "Tambah Data"}
-                            </button>
-
-                            <button
-                                className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
-                                onClick={() => setShowI(false)}
-                                type="button"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                        <button
-                            className="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
-                            onClick={() => setShowI(false)}
-                            aria-label="close modal"
-                            role="button"
-                        ></button>
-                    </form>
-                </div>
-            </Modal>
-            <Modal show={show} onClose={() => onClose()} setShow={setShow}>
-                <div className="w-full my-6 px-6 py-4 mx-auto bg-white overflow-hidden sm:rounded-lg">
-                    <form
-                        onSubmit={submit}
-                        className="flex flex-col gap-2"
-                        method="post"
-                    >
-                        {flash.error && (
-                            <Alert type="error">{flash.error}</Alert>
-                        )}
-                        {flash.success && (
-                            <Alert type="success">{flash.success}</Alert>
-                        )}
-
-                        <div className="text-center text-xl">
-                            Form Edit Data User
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="nama" value="NAMA" />
-
-                            <TextInput
-                                id="nama"
-                                type="text"
-                                name="nama"
-                                value={data.nama}
-                                className="mt-1 block w-full"
-                                autoComplete="nama"
-                                isFocused={true}
-                                onChange={handleOnChange}
-                            />
-
-                            <InputError
-                                message={errors.nama}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="username" value="USERNAME" />
-
-                            <TextInput
-                                id="username"
-                                type="text"
-                                name="username"
-                                value={data.username}
-                                className="mt-1 block w-full"
-                                autoComplete="username"
-                                isFocused={true}
-                                onChange={handleOnChange}
-                            />
-
-                            <InputError
-                                message={errors.username}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="email" value="EMAIL" />
-
-                            <TextInput
-                                id="email"
-                                type="text"
-                                name="email"
-                                value={data.email}
-                                className="mt-1 block w-full"
-                                autoComplete="email"
-                                isFocused={true}
-                                onChange={handleOnChange}
-                            />
-
-                            <InputError
-                                message={errors.email}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div>
-                            <InputLabel htmlFor="level" value="LEVEL" />
-
-                            <select
-                                name="level"
-                                id="level"
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                onChange={handleOnChange}
-                                defaultValue={data.level}
-                            >
-                                {data.level == "admin" ? (
-                                    <option
-                                        value={`${data.level}`}
-                                        selected={data.level}
-                                    >
-                                        {`${data.level}`}
-                                    </option>
-                                ) : (
-                                    levels &&
-                                    levels.map((level, index) => {
-                                        return (
-                                            <option
-                                                key={index + level}
-                                                value={`${level}`}
-                                                selected={data.level == level}
-                                            >
-                                                {`${level}`}
-                                            </option>
-                                        );
-                                    })
-                                )}
-                            </select>
-
-                            <InputError
-                                message={errors.level}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div className="flex items-center">
-                            <button
-                                disabled={processing}
-                                className="disabled:bg-gray-400 w-full text-center justify-center inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-sm text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150"
-                            >
-                                {processing ? "Loading...." : "Update Data"}
-                            </button>
-
-                            <button
-                                className="focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-gray-400 ml-3 bg-gray-100 transition duration-150 text-gray-600 ease-in-out hover:border-gray-400 hover:bg-gray-300 border rounded px-8 py-2 text-sm"
-                                onClick={() => setShow(false)}
-                                type="button"
-                            >
-                                Cancel
-                            </button>
-                        </div>
-                        <button
-                            className="cursor-pointer absolute top-0 right-0 mt-4 mr-5 text-gray-400 hover:text-gray-600 transition duration-150 ease-in-out rounded focus:ring-2 focus:outline-none focus:ring-gray-600"
-                            onClick={() => setShow(false)}
-                            aria-label="close modal"
-                            role="button"
-                        ></button>
-                    </form>
-                </div>
-            </Modal>
+            <ModalUser params={paramInsert} type="delete"></ModalUser>
+            <ModalUser params={paramInsert} password={true}></ModalUser>
+            <ModalUser params={paramUpdate}></ModalUser>
         </DashboardLayout>
     );
 }

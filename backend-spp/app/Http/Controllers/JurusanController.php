@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Jurusan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class JurusanController extends Controller
 {
@@ -12,7 +14,8 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        //
+        $jurusan = Jurusan::paginate();
+        return Inertia::render('Jurusan/Index',['jurusan'=>$jurusan]);
     }
 
     /**
@@ -20,7 +23,7 @@ class JurusanController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Jurusan/Create');
     }
 
     /**
@@ -28,7 +31,23 @@ class JurusanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = Validator::make($request->all(),[
+            "jurusan"=> "required",
+            "kompetensi_keahlian"=> "required",
+        ]);
+
+        if($validate->fails()){
+            return back()->withErrors($validate->errors());
+        }
+        $validate = $validate->validate();
+        $data = Jurusan::create([
+            "jurusan"=> $validate['jurusan'],
+            "kompetensi_keahlian"=> $validate['kompetensi_keahlian'],
+        ]);
+        if($data){
+            return back()->with('success','data berhasil di tambahkan');
+        }
+        return back()->with('error','data gagal di tambahkan');
     }
 
     /**
@@ -36,7 +55,7 @@ class JurusanController extends Controller
      */
     public function show(Jurusan $jurusan)
     {
-        //
+        return Inertia::render('Jurusan/View',['jurusan'=>$jurusan]);
     }
 
     /**
@@ -52,7 +71,24 @@ class JurusanController extends Controller
      */
     public function update(Request $request, Jurusan $jurusan)
     {
-        //
+        $validate = Validator::make($request->all(),[
+            "jurusan"=> "required",
+            "kompetensi_keahlian"=> "required",
+        ]);
+
+        if($validate->fails()){
+            return back()->withErrors($validate->errors());
+        }
+        $validate = $validate->validate();
+        $data = $jurusan->update([
+            "jurusan"=> $validate['jurusan'],
+            "kompetensi_keahlian"=> $validate['kompetensi_keahlian'],
+        ]);
+
+        if($data){
+            return back()->with('success','data berhasil di perbaruhi');
+        }
+        return back()->with('error','data gagal di perbaruhi');
     }
 
     /**
@@ -60,6 +96,10 @@ class JurusanController extends Controller
      */
     public function destroy(Jurusan $jurusan)
     {
-        //
+        $data = $jurusan->destroy($jurusan->id);
+        if($data){
+            return back()->with('success',"data berhasil di hapus");
+        }
+        return back()->with('error',"data gagal di hapus");
     }
 }

@@ -14,7 +14,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::paginate();
+        $user = User::paginate(12);
+        
         return Inertia::render('User/Index',['user'=>$user]);
     }
 
@@ -36,9 +37,9 @@ class UserController extends Controller
     {
         $validate = Validator::make($request->all(),[
             "nama"=> "required",
-            "username"=> "required",
-            "email"=> "required",
-            "password"=> "required",
+            "username"=> "required|unique:users",
+            "email"=> "required|unique:users",
+            "password"=> "required|min:8",
             "level"=> "required",
         ]);
 
@@ -46,14 +47,19 @@ class UserController extends Controller
             return back()->withErrors($validate->errors());
         }
         $validate = $validate->validate();
-        $user = User::create([
+        $validate['password'] = bcrypt($validate['password']);
+        $data = User::create([
             "nama"=>$validate['nama'],
             "username"=>$validate['username'],
             "email"=>$validate['email'],
             "password"=>$validate['password'],
             "level"=>$validate['level'],
         ]);
-        return dd(User::all());
+        if($data){
+            return back()->with('success','data berhasil di tambahkan');
+        }
+        return back()->with('error','data gagal di tambahkan');
+        // return dd(User::all());
     }
 
     /**
@@ -83,8 +89,8 @@ class UserController extends Controller
     {
         $validate = Validator::make($request->all(),[
             "nama"=> "required",
-            "username"=> "required",
-            "email"=> "required",
+            "username"=> "required|unique:users,username,".$user->id,
+            "email"=> "required|unique:users,email,".$user->id,
             "level"=> "required",
         ]);
 
@@ -99,8 +105,10 @@ class UserController extends Controller
             "level"=>$validate['level'],
         ]);
 
-        return back()->with('success','data berhasil di perbarui');
-        // return dd($user);
+        if($data){
+            return back()->with('success','data berhasil di perbaruhi');
+        }
+        return back()->with('error','data gagal di perbaruhi');
     }
 
     /**
@@ -108,7 +116,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->destroy($user->id);
-        return back()->with('success',"data berhasil di hapus");
+        $data = $user->destroy($user->id);
+        if($data){
+            return back()->with('success',"data berhasil di hapus");
+        }
+        return back()->with('error',"data gagal di hapus");
     }
 }

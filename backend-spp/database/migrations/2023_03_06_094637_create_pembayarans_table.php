@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('petugas_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('siswa_id')->constrained()->onUpdate('cascade');
+            $table->foreignId('petugas_id')->constrained('users')->onUpdate('cascade');
             $table->date('tgl_bayar');
-            $table->string('bulan_dibayar',8);
-            $table->string('tahun_dibayar',4);
-            $table->foreignId('spp_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('spp_id')->constrained()->onUpdate('cascade');
             $table->double('jumlah_bayar');
+            $table->boolean('status');
 
             $table->timestamps();
         });

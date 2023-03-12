@@ -37,4 +37,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function is_admin(){
+        return $this->where('level', 'admin')->exists();
+    }
+    public function is_petugas(){
+        return $this->where('level', 'petugas')->exists();
+    }
+    public function is_siswa(){
+        return $this->where('level', 'siswa')->exists();
+    }
+
 }

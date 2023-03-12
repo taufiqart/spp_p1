@@ -18,7 +18,7 @@ class SiswaController extends Controller
     {
         $kelas = Kelas::all();
         $jurusan = Jurusan::all();
-        $siswa = Siswa::paginate(8);
+        $siswa = Siswa::paginate(12);
         // return dd($siswa);
         return Inertia::render('Siswa/Index',['siswa'=>$siswa,'kelas'=>$kelas,'jurusan'=>$jurusan]);
     }
@@ -40,13 +40,13 @@ class SiswaController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(),[
-            "nisn"=> "required",
-            "nis"=> "required",
+            "nisn"=> "required|min:10|max:10|unique:siswas",
+            "nis"=> "required|min:8|max:8|unique:siswas",
             "nama"=> "required",
             "kelas_id"=> "required",
             "jurusan_id"=> "required",
             "alamat"=> "required",
-            "no_tlp"=> "required",
+            "no_tlp"=> "required|digits_between:11,13|integer",
             "user_id"=> "nullable",
         ]);
 
@@ -54,7 +54,7 @@ class SiswaController extends Controller
             return back()->withErrors($validate->errors());
         }
         $validate = $validate->validate();
-        $siswa = Siswa::create([
+        $data = Siswa::create([
             "nisn"=>$validate['nisn'],
             "nis"=>$validate['nis'],
             "nama"=>$validate['nama'],
@@ -65,7 +65,10 @@ class SiswaController extends Controller
             "no_tlp"=>$validate['no_tlp'],
             "user_id"=>$validate['user_id'],
         ]);
-        return dd(Siswa::all());
+        if($data){
+            return back()->with('success','data berhasil di tambahkan');
+        }
+        return back()->with('error','data gagal di tambahkan');
     }
 
     /**
@@ -93,13 +96,13 @@ class SiswaController extends Controller
     public function update(Request $request, Siswa $siswa)
     {
         $validate = Validator::make($request->all(),[
-            "nisn"=> "required",
-            "nis"=> "required",
+            "nisn"=> "required|min:10|max:10|unique:siswas,nisn,".$siswa->id,
+            "nis"=> "required|min:8|max:8|unique:siswas,nis,".$siswa->id,
             "nama"=> "required",
             "kelas_id"=> "required",
             "jurusan_id"=> "required",
             "alamat"=> "required",
-            "no_tlp"=> "required",
+            "no_tlp"=> "required|digits_between:11,13|integer",
             "user_id"=> "nullable",
         ]);
 
@@ -107,7 +110,7 @@ class SiswaController extends Controller
             return back()->withErrors($validate->errors());
         }
         $validate = $validate->validate();
-        $siswa->update([
+        $data = $siswa->update([
             "nisn"=>$validate['nisn'],
             "nis"=>$validate['nis'],
             "nama"=>$validate['nama'],
@@ -119,8 +122,10 @@ class SiswaController extends Controller
             "user_id"=>$validate['user_id'],
         ]);
 
-        return back()->with('success','data berhasil di perbarui');
-        return dd($request);
+        if($data){
+            return back()->with('success','data berhasil di perbaruhi');
+        }
+        return back()->with('error','data gagal di perbaruhi');
     }
 
     /**
@@ -128,8 +133,11 @@ class SiswaController extends Controller
      */
     public function destroy(Siswa $siswa)
     {
-        
-        $siswa->destroy($siswa->id);
-        return back()->with('success',"data berhasil di hapus");
+
+        $data = $siswa->destroy($siswa->id);
+        if($data){
+            return back()->with('success',"data berhasil di hapus");
+        }
+        return back()->with('error',"data gagal di hapus");
     }
 }

@@ -11,5 +11,16 @@ class Pembayaran extends Model
 
     protected $guarded = ['id'];
 
+    protected $with = ['siswa','petugas','spp'];
 
+    public function siswa(){
+        return $this->belongsTo(Siswa::class);
+    }
+
+    public function petugas(){
+        return $this->belongsTo(User::class,'petugas_id','id');
+    }
+    public function spp(){
+        return $this->belongsTo(Spp::class);
+    }
 }

@@ -1219,7 +1219,7 @@ h6 {
 }
 
 .h-sidenav {
-  height: calc(100vh - 370px);
+  height: calc(100vh - 250px);
 }
 
 .h-8 {
