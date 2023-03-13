@@ -14,7 +14,7 @@
         <!--     Fonts and icons     -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
         <!-- Font Awesome Icons -->
-        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+        {{-- <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script> --}}
         <!-- Nucleo Icons -->
         <link href="/assets/css/nucleo-icons.css" rel="stylesheet" />
         <link href="/assets/css/nucleo-svg.css" rel="stylesheet" />
@@ -31,6 +31,10 @@
         <script async defer src="https://buttons.github.io/buttons.js"></script>
         <!-- main script file  -->
         <script src="/assets/js/soft-ui-dashboard-tailwind.js?v=1.0.4" async></script>
+        <link rel="stylesheet" href="/assets/fontawesome/css/all.css">
+        <link rel="stylesheet" href="/assets/fontawesome/css/fontawesome.css">
+        <script src="/assets/fontawesome/js/all.js"></script>
+        <script src="/assets/fontawesome/js/fontawesome.js"></script>
         @routes
         @viteReactRefresh
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
