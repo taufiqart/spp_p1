@@ -18,7 +18,7 @@ class SiswaController extends Controller
     {
         $kelas = Kelas::all();
         $jurusan = Jurusan::all();
-        $siswa = Siswa::paginate(12);
+        $siswa = Siswa::paginate(10);
         // return dd($siswa);
         return Inertia::render('Siswa/Index',['siswa'=>$siswa,'kelas'=>$kelas,'jurusan'=>$jurusan]);
     }

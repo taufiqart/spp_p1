@@ -14,7 +14,7 @@ class KelasController extends Controller
      */
     public function index()
     {
-        $kelas = Kelas::paginate();
+        $kelas = Kelas::paginate(10);
         return Inertia::render('Kelas/Index',['kelas'=>$kelas]);
     }
 

@@ -17,7 +17,7 @@ class PembayaranController extends Controller
      */
     public function index()
     {
-        $pembayaran = Pembayaran::paginate(12);
+        $pembayaran = Pembayaran::paginate(10);
 
         if(auth()->user()->level == 'siswa'){
             $pembayaran = Pembayaran::where('siswa_id',auth()->user()->id)->paginate(12);

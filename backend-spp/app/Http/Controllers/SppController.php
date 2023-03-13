@@ -15,7 +15,7 @@ class SppController extends Controller
      */
     public function index()
     {
-        $spp = Spp::paginate(12);
+        $spp = Spp::paginate(10);
         // return dd($spp);
         return Inertia::render('Spp/Index',['spp'=>$spp]);
     }

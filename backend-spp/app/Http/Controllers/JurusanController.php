@@ -14,7 +14,7 @@ class JurusanController extends Controller
      */
     public function index()
     {
-        $jurusan = Jurusan::paginate();
+        $jurusan = Jurusan::paginate(10);
         return Inertia::render('Jurusan/Index',['jurusan'=>$jurusan]);
     }
 
