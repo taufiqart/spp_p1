@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', -1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('pembayarans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('siswa_id')->constrained()->onUpdate('cascade');
-            $table->foreignId('petugas_id')->constrained('users')->onUpdate('cascade');
+            $table->foreignId('siswa_id')->constrained();
+            $table->foreignId('petugas_id')->constrained('users');
             $table->date('tgl_bayar');
-            $table->foreignId('spp_id')->constrained()->onUpdate('cascade');
+            $table->foreignId('spp_id')->constrained();
             $table->double('jumlah_bayar');
             $table->boolean('status');
 

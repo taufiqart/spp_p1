@@ -30,8 +30,8 @@ export default function Index({ user, kelas, jurusan }) {
         reset,
     } = useForm({
         id: "",
-        nama: "",
-        username: "",
+        // nama: "",
+        // nisn: "",
         email: "",
         level: "siswa",
         password: "",
@@ -40,12 +40,7 @@ export default function Index({ user, kelas, jurusan }) {
     let { flash, auth } = usePage().props;
 
     useEffect(() => {
-        user.data &&
-            user.data.forEach((e) => {
-                if (!levels.includes(e.level)) {
-                    setLevels([...levels, e.level]);
-                }
-            });
+        setLevels(['siswa', 'petugas', 'admin'])
     }, [levels]);
     let d = usePage().props;
 
@@ -58,7 +53,7 @@ export default function Index({ user, kelas, jurusan }) {
         // setData({
         //     id: "",
         //     nama: "",
-        //     username: "",
+        //     nisn: "",
         //     email: "",
         //     level: "siswa",
         //     password: "",
@@ -70,7 +65,7 @@ export default function Index({ user, kelas, jurusan }) {
         // setData({
         //     id: "",
         //     nama: "",
-        //     username: "",
+        //     nisn: "",
         //     email: "",
         //     level: "siswa",
         //     password: "",
@@ -192,8 +187,8 @@ export default function Index({ user, kelas, jurusan }) {
                 titleHeader={"Data User"}
                 thead={
                     <>
-                        <Table.Th>NAMA</Table.Th>
-                        <Table.Th>USERNAME</Table.Th>
+                        {/* <Table.Th>NAMA</Table.Th> */}
+                        {/* <Table.Th>nisn</Table.Th> */}
                         <Table.Th>EMAIL</Table.Th>
                         <Table.Th>LEVEL</Table.Th>
                         <Table.Th></Table.Th>
@@ -204,16 +199,16 @@ export default function Index({ user, kelas, jurusan }) {
                     user.data.map((use, idx) => {
                         return (
                             <tr key={idx}>
-                                <Table.Td index={idx} length={user.data.length}>
+                                {/* <Table.Td index={idx} length={user.data.length}>
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
                                         {use.nama}
                                     </span>
-                                </Table.Td>
-                                <Table.Td index={idx} length={user.data.length}>
+                                </Table.Td> */}
+                                {/* <Table.Td index={idx} length={user.data.length}>
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {use.username}
+                                        {use.nisn}
                                     </span>
-                                </Table.Td>
+                                </Table.Td> */}
                                 <Table.Td index={idx} length={user.data.length}>
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
                                         {use.email}
@@ -225,8 +220,8 @@ export default function Index({ user, kelas, jurusan }) {
                                             use.level == "admin"
                                                 ? 0
                                                 : use.level == "petugas"
-                                                ? 1
-                                                : 2
+                                                    ? 1
+                                                    : 2
                                         }
                                     >
                                         {use.level}
@@ -262,8 +257,8 @@ export default function Index({ user, kelas, jurusan }) {
                                             onClick={() => {
                                                 setData({
                                                     id: use.id,
-                                                    nama: use.nama,
-                                                    username: use.username,
+                                                    // nama: use.nama,
+                                                    // nisn: use.nisn,
                                                     email: use.email,
                                                     level: use.level,
                                                 });
@@ -284,7 +279,7 @@ export default function Index({ user, kelas, jurusan }) {
                                                 />
                                             </svg>
                                         </div>
-                                        {auth.user.username != use.username ? (
+                                        {auth.user.email != use.email ? (
                                             <>
                                                 <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                                     <svg
@@ -320,7 +315,7 @@ export default function Index({ user, kelas, jurusan }) {
 
             <Pagination links={links}></Pagination>
 
-            <ModalUser params={paramInsert} type="delete"></ModalUser>
+            <ModalUser params={paramDelete} type="delete"></ModalUser>
             <ModalUser params={paramInsert} password={true}></ModalUser>
             <ModalUser params={paramUpdate}></ModalUser>
         </DashboardLayout>

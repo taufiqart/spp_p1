@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Siswa;
+use App\Models\Petugas;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
-class UserController extends Controller
+class PetugasController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = User::paginate(10);
-        $siswa = Siswa::all();
-        
-        return Inertia::render('User/Index',compact('user', 'siswa'));
+        $petugas = Petugas::paginate(10);
+        // $user = [''];
+        $user = User::where('level','!=','siswa')->get();
+        // return dd($siswa);
+        return Inertia::render('Petugas/Index',compact('petugas','user'));
+
     }
 
     /**
@@ -26,10 +28,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        // $user = User::all();
-        // $user = U::all();
-        // return dd($kelas);
-        return Inertia::render('User/Create');
+        //
     }
 
     /**
@@ -38,48 +37,36 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(),[
-            // "nama"=> "required",
-            // "nisn"=> "required|unique:users",
-            "email"=> "required|unique:users",
-            "password"=> "required|min:8",
-            "level"=> "required",
+            "nama"=> "required",
+            "user_id"=> "nullable|unique:petugas,user_id",
         ]);
 
         if($validate->fails()){
             return back()->withErrors($validate->errors());
         }
         $validate = $validate->validate();
-        $validate['password'] = bcrypt($validate['password']);
-        $data = User::create([
-            // "nama"=>$validate['nama'],
-            // "nisn"=>$validate['nisn'],
-            "email"=>$validate['email'],
-            "password"=>$validate['password'],
-            "level"=>$validate['level'],
+        $data = Petugas::create([
+            "nama"=>$validate['nama'],
+            "user_id"=>$validate['user_id'],
         ]);
         if($data){
             return back()->with('success','data berhasil di tambahkan');
         }
         return back()->with('error','data gagal di tambahkan');
-        // return dd(User::all());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Petugas $petugas)
     {
-        // $kelas = Kelas::all();
-        // $jurusan = Jurusan::all();
-
-        return Inertia::render('User/View',['user'=>$user]);
-        // return dd($siswa);
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Petugas $petugas)
     {
         //
     }
@@ -87,25 +74,24 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Petugas $petuga)
     {
         $validate = Validator::make($request->all(),[
-            // "nama"=> "required",
-            // "username"=> "required|unique:users,username,".$user->id,
-            "email"=> "required|unique:users,email,".$user->id,
-            "level"=> "required",
+            "nama"=> "required",
+            "user_id"=> "nullable|unique:petugas,user_id",
         ]);
 
         if($validate->fails()){
             return back()->withErrors($validate->errors());
         }
+
         $validate = $validate->validate();
-        $data = $user->update([
-            // "nama"=>$validate['nama'],
-            // "username"=>$validate['username'],
-            "email"=>$validate['email'],
-            "level"=>$validate['level'],
+        $data = $petuga->update([
+            "nama"=>$validate['nama'],
+            "user_id"=>$validate['user_id'],
         ]);
+
+        // return dd($validate);
 
         if($data){
             return back()->with('success','data berhasil di perbaruhi');
@@ -116,9 +102,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Petugas $petuga)
     {
-        $data = $user->destroy($user->id);
+        $data = $petuga->destroy($petuga->id);
         if($data){
             return back()->with('success',"data berhasil di hapus");
         }

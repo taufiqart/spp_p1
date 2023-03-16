@@ -8,8 +8,8 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import Alert from "@/Components/Alert";
 import Pagination from "@/Components/Pagination";
-import ModalSiswa from "./Partials/ModalSiswa";
-export default function Index({ siswa, kelas, jurusan, user }) {
+import ModalPetugas from "./Partials/ModalPetugas";
+export default function Index({ petugas, user }) {
     const [show, setShow] = useState(false);
     const [showD, setShowD] = useState(false);
     const [showU, setShowU] = useState(false);
@@ -27,20 +27,14 @@ export default function Index({ siswa, kelas, jurusan, user }) {
         reset,
     } = useForm({
         id: "",
-        nisn: "",
-        nis: "",
         nama: "",
-        kelas_id: "1",
-        jurusan_id: "1",
-        alamat: "",
-        no_tlp: "",
         user_id: "",
     });
 
     let { flash } = usePage().props;
     useEffect(() => {
-        console.log(siswa);
-        setLinks(siswa.links);
+        console.log(petugas);
+        setLinks(petugas.links);
         console.log(links);
     }, []);
 
@@ -84,20 +78,20 @@ export default function Index({ siswa, kelas, jurusan, user }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route("siswa.store", data.id));
+        post(route("petugas.store", data.id));
     };
     const submitU = (e) => {
         e.preventDefault();
 
-        put(route("siswa.update", data.id));
+        put(route("petugas.update", data.id));
     };
     const deleteSubmit = (e) => {
         e.preventDefault();
-        destroy(route("siswa.update", data.id));
+        destroy(route("petugas.update", data.id));
     };
     let paramUpdate = {
         textBtn: "Update Data",
-        title: "Update Data Siswa",
+        title: "Update Data Petugas",
         show: showU,
         setShow: setShowU,
         onClose: onClose,
@@ -107,14 +101,12 @@ export default function Index({ siswa, kelas, jurusan, user }) {
         errors: errors,
         processing: processing,
         submit: submitU,
-        kelas: kelas,
-        jurusan: jurusan,
         user: user,
     };
 
     let paramInsert = {
         textBtn: "Tambah Data",
-        title: "Tambah Data Siswa",
+        title: "Tambah Data Petugas",
         show: show,
         setShow: setShow,
         onClose: onClose,
@@ -124,8 +116,6 @@ export default function Index({ siswa, kelas, jurusan, user }) {
         errors: errors,
         processing: processing,
         submit: submit,
-        kelas: kelas,
-        jurusan: jurusan,
         user: user,
     };
 
@@ -142,7 +132,7 @@ export default function Index({ siswa, kelas, jurusan, user }) {
     };
 
     return (
-        <DashboardLayout pages={"Siswa"}>
+        <DashboardLayout pages={"Petugas"}>
             <div
                 onClick={() => setShow(true)}
                 className={
@@ -152,43 +142,21 @@ export default function Index({ siswa, kelas, jurusan, user }) {
                 <button>+ New</button>
             </div>
             <Table
-                titleHeader={"Data Siswa"}
+                titleHeader={"Data petugas"}
                 thead={
                     <>
-                        <Table.Th>NISN</Table.Th>
-                        <Table.Th>NIS</Table.Th>
                         <Table.Th>NAMA</Table.Th>
-                        <Table.Th>KELAS</Table.Th>
-                        <Table.Th>JURUSAN</Table.Th>
-                        <Table.Th>ALAMAT</Table.Th>
-                        <Table.Th>NO TELP</Table.Th>
                         <Table.Th></Table.Th>
                     </>
                 }
             >
-                {siswa.data &&
-                    siswa.data.map((sis, idx) => {
+                {petugas.data &&
+                    petugas.data.map((sis, idx) => {
                         return (
                             <tr key={idx}>
                                 <Table.Td
                                     index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.nisn}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.nis}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
+                                    length={petugas.data.length}
                                 >
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
                                         {sis.nama}
@@ -196,39 +164,7 @@ export default function Index({ siswa, kelas, jurusan, user }) {
                                 </Table.Td>
                                 <Table.Td
                                     index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.kelas.kelas}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.jurusan.jurusan}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.alamat}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
-                                >
-                                    <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {sis.no_tlp}
-                                    </span>
-                                </Table.Td>
-                                <Table.Td
-                                    index={idx}
-                                    length={siswa.data.length}
+                                    length={petugas.data.length}
                                 >
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
                                         {sis.user?.email}
@@ -236,10 +172,10 @@ export default function Index({ siswa, kelas, jurusan, user }) {
                                 </Table.Td>
                                 <Table.Td
                                     index={idx}
-                                    length={siswa.data.length}
+                                    length={petugas.data.length}
                                 >
                                     <div className="flex item-center justify-center">
-                                        <Link href={`siswa/${sis.id}`}>
+                                        <Link href={`petugas/${sis.id}`}>
                                             <div className="w-4 mr-2 transform hover:text-purple-500 hover:scale-110">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -267,13 +203,7 @@ export default function Index({ siswa, kelas, jurusan, user }) {
                                             onClick={() => {
                                                 setData({
                                                     id: sis.id,
-                                                    nisn: sis.nisn,
-                                                    nis: sis.nis,
                                                     nama: sis.nama,
-                                                    kelas_id: sis.kelas_id,
-                                                    jurusan_id: sis.jurusan_id,
-                                                    alamat: sis.alamat,
-                                                    no_tlp: sis.no_tlp,
                                                     user_id: sis.user_id,
                                                 });
                                                 setShowU(true);
@@ -323,9 +253,9 @@ export default function Index({ siswa, kelas, jurusan, user }) {
 
             <Pagination links={links}></Pagination>
 
-            <ModalSiswa params={paramDelete} type="delete"></ModalSiswa>
-            <ModalSiswa params={paramInsert}></ModalSiswa>
-            <ModalSiswa params={paramUpdate}></ModalSiswa>
+            <ModalPetugas params={paramDelete} type="delete"></ModalPetugas>
+            <ModalPetugas params={paramInsert}></ModalPetugas>
+            <ModalPetugas params={paramUpdate}></ModalPetugas>
         </DashboardLayout>
     );
 }

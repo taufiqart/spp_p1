@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Jurusan;
 use App\Models\Kelas;
 use App\Models\Siswa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
@@ -19,8 +20,10 @@ class SiswaController extends Controller
         $kelas = Kelas::all();
         $jurusan = Jurusan::all();
         $siswa = Siswa::paginate(10);
+        // $user = [''];
+        $user = User::where('level','siswa')->get();
         // return dd($siswa);
-        return Inertia::render('Siswa/Index',['siswa'=>$siswa,'kelas'=>$kelas,'jurusan'=>$jurusan]);
+        return Inertia::render('Siswa/Index',['siswa'=>$siswa,'kelas'=>$kelas,'jurusan'=>$jurusan,'user'=>$user,'siswa'=>$siswa]);
     }
 
     /**
@@ -121,6 +124,7 @@ class SiswaController extends Controller
             "no_tlp"=>$validate['no_tlp'],
             "user_id"=>$validate['user_id'],
         ]);
+        // return dd($data);
 
         if($data){
             return back()->with('success','data berhasil di perbaruhi');

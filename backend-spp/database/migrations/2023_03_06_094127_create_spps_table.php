@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', -1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

@@ -125,34 +125,39 @@ export default function Sidenav() {
                         <TitleSidenav>Pages</TitleSidenav>
                         <ItemSidenav
                             url={route("pembayaran.index")}
-                            icon={<Icons.pembayaran />}
+                            icon={<Icons.pembayaran className={'scale-150'} />}
                             title="Pembayaran"
                         ></ItemSidenav>
-                        {auth.user.level != "siswa" && (
+                        {auth.user.level == "admin" && (
                             <>
                                 <ItemSidenav
                                     url={route("spp.index")}
-                                    icon={<Icons.spp />}
+                                    icon={<Icons.spp className={'scale-150'} />}
                                     title="Spp"
                                 ></ItemSidenav>
                                 <ItemSidenav
                                     url={route("siswa.index")}
-                                    icon={<Icons.siswa />}
+                                    icon={<Icons.siswa className={'scale-150'} />}
                                     title="Siswa"
                                 ></ItemSidenav>
                                 <ItemSidenav
+                                    url={route("petugas.index")}
+                                    icon={<Icons.users className={'scale-150'} />}
+                                    title="Petugas"
+                                ></ItemSidenav>
+                                <ItemSidenav
                                     url={route("users.index")}
-                                    icon={<Icons.users />}
+                                    icon={<Icons.users className={'scale-150'} />}
                                     title="Users"
                                 ></ItemSidenav>
                                 <ItemSidenav
                                     url={route("kelas.index")}
-                                    icon={<Icons.kelas />}
+                                    icon={<Icons.kelas className={'scale-150'} />}
                                     title="Kelas"
                                 ></ItemSidenav>
                                 <ItemSidenav
                                     url={route("jurusan.index")}
-                                    icon={<Icons.jurusan />}
+                                    icon={<Icons.jurusan className={'scale-150'} />}
                                     title="Jurusan"
                                 ></ItemSidenav>
                             </>

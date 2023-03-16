@@ -1,4 +1,5 @@
 <?php
+ini_set('memory_limit', -1);
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,11 +17,11 @@ return new class extends Migration
             $table->char('nisn',10)->unique();
             $table->char('nis',8)->unique();
             $table->string('nama');
-            $table->foreignId('kelas_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('jurusan_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('kelas_id')->constrained();
+            $table->foreignId('jurusan_id')->constrained();
             $table->text('alamat')->nullable();
             $table->string('no_tlp',13)->nullable();
-            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

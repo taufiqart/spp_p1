@@ -41,8 +41,9 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        \App\Models\User::factory(10)->create();
-        \App\Models\Siswa::factory(10)->create();
+        \App\Models\User::factory(4)->create();
+        \App\Models\Siswa::factory(4)->create();
+        \App\Models\Petugas::factory(4)->create();
 
     }
 }

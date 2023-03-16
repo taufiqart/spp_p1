@@ -5,7 +5,7 @@ import Modal from "@/Components/Modal";
 import TextInput from "@/Components/TextInput";
 import React from "react";
 
-export default function ModalSiswa({ params, type = "" }) {
+export default function ModalPetugas({ params, type = "" }) {
     let {
         show,
         onClose,
@@ -18,7 +18,6 @@ export default function ModalSiswa({ params, type = "" }) {
         submit,
         title,
         textBtn,
-        kelas: kelas,
         jurusan: jurusan,
         user: user,
     } = params;
@@ -73,42 +72,7 @@ export default function ModalSiswa({ params, type = "" }) {
                     )}
 
                     <div className="text-center text-xl">{title}</div>
-                    <div>
-                        <InputLabel htmlFor="nisn" value="NISN" />
 
-                        <TextInput
-                            id="nisn"
-                            type="text"
-                            maxLength="10"
-                            minLength="10"
-                            name="nisn"
-                            value={data.nisn}
-                            className="mt-1 block w-full"
-                            autoComplete="nisn"
-                            isFocused={true}
-                            onChange={handleOnChange}
-                        />
-
-                        <InputError message={errors.nisn} className="mt-2" />
-                    </div>
-                    <div>
-                        <InputLabel htmlFor="nis" value="NIS" />
-
-                        <TextInput
-                            id="nis"
-                            maxLength="8"
-                            minLength="8"
-                            type="text"
-                            name="nis"
-                            value={data.nis}
-                            className="mt-1 block w-full"
-                            autoComplete="nis"
-                            isFocused={false}
-                            onChange={handleOnChange}
-                        />
-
-                        <InputError message={errors.nis} className="mt-2" />
-                    </div>
                     <div>
                         <InputLabel htmlFor="nama" value="NAMA" />
 
@@ -125,108 +89,7 @@ export default function ModalSiswa({ params, type = "" }) {
 
                         <InputError message={errors.nama} className="mt-2" />
                     </div>
-                    <div className="flex gap-x-4">
-                        <div className="w-full">
-                            <InputLabel htmlFor="kelas_id" value="KELAS" />
 
-                            <select
-                                name="kelas_id"
-                                id="kelas_id"
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                onChange={handleOnChange}
-                                defaultValue={data.kelas_id}
-                            >
-                                {kelas &&
-                                    kelas.map((kel, index) => {
-                                        // return "halo";
-                                        return (
-                                            <option
-                                                key={index}
-                                                value={`${kel.id}`}
-                                                selected={
-                                                    data.kelas_id == kel.id
-                                                }
-                                            >
-                                                {`${kel.kelas}`}
-                                            </option>
-                                        );
-                                    })}
-                            </select>
-
-                            <InputError
-                                message={errors.kelas_id}
-                                className="mt-2"
-                            />
-                        </div>
-                        <div className="w-full">
-                            <InputLabel htmlFor="jurusan_id" value="JURUSAN" />
-
-                            <select
-                                name="jurusan_id"
-                                id="jurusan_id"
-                                className="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full"
-                                onChange={handleOnChange}
-                                defaultValue={data.jurusan_id}
-                            >
-                                {jurusan &&
-                                    jurusan.map((jurusan, index) => {
-                                        // return "halo";
-                                        return (
-                                            <option
-                                                key={index}
-                                                value={`${jurusan.id}`}
-                                                selected={
-                                                    data.jurusan_id ==
-                                                    jurusan.id
-                                                }
-                                            >
-                                                {`${jurusan.jurusan}`}
-                                            </option>
-                                        );
-                                    })}
-                            </select>
-
-                            <InputError
-                                message={errors.jurusan_id}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <InputLabel htmlFor="alamat" value="ALAMAT" />
-
-                        <TextInput
-                            id="alamat"
-                            type="text"
-                            name="alamat"
-                            area={true}
-                            value={data.alamat ?? ""}
-                            className="mt-1 block w-full"
-                            autoComplete="alamat"
-                            isFocused={false}
-                            onChange={handleOnChange}
-                        />
-
-                        <InputError message={errors.alamat} className="mt-2" />
-                    </div>
-                    <div>
-                        <InputLabel htmlFor="no_tlp" value="NO TLP" />
-
-                        <TextInput
-                            id="no_tlp"
-                            type="text"
-                            name="no_tlp"
-                            minLength="12"
-                            maxLength="13"
-                            value={data.no_tlp ?? ""}
-                            className="mt-1 block w-full"
-                            autoComplete="no_tlp"
-                            onChange={handleOnChange}
-                        />
-
-                        <InputError message={errors.no_tlp} className="mt-2" />
-                    </div>
                     <div>
                         <InputLabel htmlFor="user_id" value="USER ID" />
 

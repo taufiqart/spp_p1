@@ -18,6 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $guarded = ['id'];
+    protected $with = ['petugas'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,6 +47,13 @@ class User extends Authenticatable
     }
     public function is_siswa(){
         return $this->where('level', 'siswa')->exists();
+    }
+
+    public function siswa(){
+        return $this->hasMany(Siswa::class);
+    }
+    public function petugas(){
+        return $this->hasMany(Petugas::class);
     }
 
 }

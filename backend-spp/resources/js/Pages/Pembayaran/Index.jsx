@@ -190,7 +190,7 @@ export default function Index({ pembayaran, siswa, spp }) {
                                     length={pembayaran.data.length}
                                 >
                                     <span className="font-semibold leading-tight text-xs text-slate-400">
-                                        {pembaya.petugas.nama}
+                                        {pembaya.petugas.siswa?.nama}
                                     </span>
                                 </Table.Td>
                                 <Table.Td

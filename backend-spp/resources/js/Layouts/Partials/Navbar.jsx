@@ -28,7 +28,7 @@ export default function Navbar() {
                                 className="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
                                 aria-current="page"
                             >
-                                {window.location.pathname.split("/").slice(-1)}
+                                {window.location.pathname.split("/").length > 2 ? window.location.pathname.split("/").slice(-1) : ''}
                             </li>
                         </ol>
                         <h6 className="mb-0 font-bold capitalize">

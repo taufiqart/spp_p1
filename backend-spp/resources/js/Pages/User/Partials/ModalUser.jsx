@@ -72,7 +72,7 @@ export default function ModalUser({ params, password = false, type = "" }) {
                     )}
 
                     <div className="text-center text-xl">{title}</div>
-                    <div>
+                    {/* <div>
                         <InputLabel htmlFor="nama" value="NAMA" />
 
                         <TextInput
@@ -87,26 +87,73 @@ export default function ModalUser({ params, password = false, type = "" }) {
                         />
 
                         <InputError message={errors.nama} className="mt-2" />
-                    </div>
-                    <div>
-                        <InputLabel htmlFor="username" value="USERNAME" />
+                    </div> */}
+                    {/* <div>
+                        <InputLabel htmlFor="siswa_id" value="siswa_id" />
 
                         <TextInput
-                            id="username"
+                            id="siswa_id"
                             type="text"
-                            name="username"
-                            value={data.username}
+                            name="siswa_id"
+                            list="siswa_ids"
+                            value={data.siswa_id}
                             className="mt-1 block w-full"
-                            autoComplete="username"
+                            autoComplete="siswa_id"
                             isFocused={false}
                             onChange={handleOnChange}
                         />
+                        <datalist id="siswa_ids">
+                            {siswa &&
+                                siswa.map((sis, index) => {
+                                    return (
+                                        <option
+                                            value={sis.id}
+                                            key={index + sis.id}
+                                        >
+                                            {`${sis.nama}/${sis.kelas.kelas}/${sis.jurusan.jurusan}`}
+                                        </option>
+                                    );
+                                })}
+                        </datalist>
 
                         <InputError
-                            message={errors.username}
+                            message={errors.siswa_id}
                             className="mt-2"
                         />
-                    </div>
+                    </div> */}
+                    {/* <div>
+                        <InputLabel htmlFor="petugas_id" value="petugas_id" />
+
+                        <TextInput
+                            id="petugas_id"
+                            type="text"
+                            name="petugas_id"
+                            list="petugasids"
+                            value={data.petugas_id}
+                            className="mt-1 block w-full"
+                            autoComplete="petugas_id"
+                            isFocused={false}
+                            onChange={handleOnChange}
+                        />
+                        <datalist id="petugas_ids">
+                            {petugas &&
+                                petugas.map((sis, index) => {
+                                    return (
+                                        <option
+                                            value={sis.id}
+                                            key={index + sis.id}
+                                        >
+                                            {`${sis.nama}`}
+                                        </option>
+                                    );
+                                })}
+                        </datalist>
+
+                        <InputError
+                            message={errors.petugas_id}
+                            className="mt-2"
+                        />
+                    </div> */}
                     <div>
                         <InputLabel htmlFor="email" value="EMAIL" />
 
